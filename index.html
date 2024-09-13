@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthHub - Your Medicine Shop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="index.html">HealthHub</a></h1>
+            <nav>
+                <ul>
+		                        <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="cart">
+                <span id="cart-count">0</span> items - $<span id="cart-total">0.00</span>
+                <button id="clear-cart">Clear Cart</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <!-- Ads Section -->
+            <section class="ads">
+                <div class="ads-container">
+                    <img src="welcomee.jfif" alt="WELCOME" align="center" width="200" height="100">
+                </div>
+            </section>
+            
+            <!-- Products Section -->
+            <section class="products">
+                <h2>Our Products</h2>
+                <div class="product-grid">
+                    <div class="product-card" data-name="Syrups and Tonics" data-price="10.00">
+                        <img src="syrup.jfif" alt="Syrups and Tonics">
+                        <h2>Syrups and Tonics</h2>
+                        <p>$10.00</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                    <div class="product-card" data-name="Tablets or Capsules" data-price="15.00">
+                        <img src="medicine1.jfif" alt="Tablets or Capsules">
+                        <h2>Tablets or Capsules</h2>
+                        <p>$15.00</p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Section -->
+            <section class="payment">
+                <h2>Payment Options</h2>
+                <form id="payment-form">
+                    <label>
+                        <input type="radio" name="payment-method" value="card" checked> Credit/Debit Card
+                    </label>
+                    <label>
+                        <input type="radio" name="payment-method" value="upi"> UPI
+                    </label>
+                    <button type="submit">Proceed to Payment</button>
+                </form>
+                <p id="thank-you-message" style="display:none;">Thank you for shopping with us!</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 HealthHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentAd = 0;
+        const ads = document.querySelectorAll('.ad-slide');
+        const totalAds = ads.length;
+        
+        function showNextAd() {
+            ads[currentAd].classList.remove('active');
+            currentAd = (currentAd + 1) % totalAds;
+            ads[currentAd].classList.add('active');
+        }
+        
+        setInterval(showNextAd, 3000); // Change ad every 3 seconds
+
+        let cartCount = 0;
+        let cartTotal = 0.00;
+
+        function updateCart() {
+            document.getElementById('cart-count').textContent = cartCount;
+            document.getElementById('cart-total').textContent = cartTotal.toFixed(2);
+            const thankYouMessage = document.getElementById('thank-you-message');
+            if (cartTotal > 0) {
+                thankYouMessage.style.display = 'none';
+            }
+            if (cartTotal === 0) {
+                thankYouMessage.style.display = 'none';
+            }
+        }
+        
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', () => {
+                const card = button.parentElement;
+                const price = parseFloat(card.getAttribute('data-price'));
+                cartCount++;
+                cartTotal += price;
+                // Apply discount if applicable
+                if (cartTotal > 50) {
+                    cartTotal *= 0.80; // 20% discount
+                }
+                updateCart();
+            });
+        });
+
+        document.getElementById('clear-cart').addEventListener('click', () => {
+            cartCount = 0;
+            cartTotal = 0.00;
+            updateCart();
+        });
+
+        document.getElementById('payment-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert('Payment successful!');
+            document.getElementById('thank-you-message').style.display = 'block';
+            cartCount = 0;
+            cartTotal = 0.00;
+            updateCart();
+        });
+    </script>
+</body>
+</html>
